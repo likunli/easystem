@@ -1,0 +1,36 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-student-nav></app-student-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Course Grade</h1>
+        <select type="semester" id="semester" class="form-control col-md-3" [(ngModel)]="semester" (ngModelChange)="refresh()"
+          #role="ngModel" name="semester">
+          <option [value]="o.value" *ngFor="let o of semesterOptions">
+            {{o.name}}
+          </option>
+        </select>
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th>Course Number</th>
+            <th>Course Name</th>
+            <th>Credit</th>
+            <th>Grade</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let o of courseGrade">
+              <td>{{o.number}}</td>
+              <td>{{o.name}}</td>
+              <td>{{o.credit}}</td>
+              <td>{{o.score}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <div class="sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link active" [routerLink]="['/teacher/home']">
+          <span data-feather="home"></span>
+          Dashboard <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/teacher/course']">
+          <span data-feather="file"></span>
+          Course Management
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/teacher/assignment']">
+          <span data-feather="file"></span>
+          Assignment Management
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link">
+          <span data-feather="file"></span>
+          Developing...
+        </a>
+      </li>
+    </ul>
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+      <span>Other</span>
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/student/info']">
+          <span data-feather="file-text"></span>
+          Account Detail
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,395 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-finance-manager-nav></app-finance-manager-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Scholarship</h1>
+
+        <div class="row">
+          <div class="col-md-3">
+            <!-- <form name="form" id="f" (ngSubmit)="search()" #f="ngForm" novalidate> -->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Scholarship Name" name="search" id="search"
+                [(ngModel)]="curSearch" #search="ngModel">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" (click)="searchScholarship()">Search</button>
+              </div>
+            </div>
+            <!-- </form> -->
+          </div>
+
+          <div class="col-md-5"></div>
+          <div class="col-md-3">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#createModal">Add Scholarship</button>
+          </div>
+        </div>
+
+
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th> Number</th>
+            <th> Name</th>
+            <th> Type</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let o of scholarships">
+              <td>{{o.number}}</td>
+              <td>{{o.name}}</td>
+              <td>{{o.scholarshipType}}</td>
+              <td>
+                <button class="btn btn-info" (click)="update(o)" data-toggle="modal" data-target="#attachModal">Attach</button>
+                <button class="btn btn-info" (click)="update(o)" data-toggle="modal" data-target="#updateModal">Edit</button>
+                <button class="btn btn-danger" (click)="update(o)" data-toggle="modal" data-target="#deleteModal">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- attach modal -->
+<div class="modal fade" id="attachModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Remove Scholarship</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Warning!<br>
+          Do you want Attach the <b>{{curScholarship.number}} {{curScholarship.name}} to all qualified students</b> ? :(
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="attach(curScholarship.id)" href="javascript:void(0)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- update modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Update Scholarship</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- add scholarship -->
+        <form name="form" id="f2" (ngSubmit)="f2.form.valid && updateScholarship()" #f2="ngForm" novalidate>
+          <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+          <span id="reauth-email" class="reauth-email"></span>
+          <div class="row container">
+            <!-- scholarship number -->
+            <div class="form-group" [ngClass]="{ 'has-error': f2.submitted && !UscholarshipNumber.valid }">
+              <label for="UscholarshipNumber">Scholarship Number</label>
+              <input type="text" class="form-control" name="UscholarshipNumber" id="UscholarshipNumber" [(ngModel)]="curScholarship.number"
+                #UscholarshipNumber="ngModel" required />
+              <div *ngIf="f2.submitted && !UscholarshipNumber.valid" class="help-block">
+                <div *ngIf="UscholarshipNumber.errors.required" class="text-danger">
+                  scholarshipNumber is required.
+                </div>
+              </div>
+            </div>
+            <!-- scholarship name -->
+            <div class="form-group" [ngClass]="{ 'has-error': f2.submitted && !UscholarshipName.valid }">
+              <label for="UscholarshipName">Scholarship Name</label>
+              <input type="text" class="form-control" name="UscholarshipName" id="UscholarshipName" [(ngModel)]="curScholarship.name"
+                #UscholarshipName="ngModel" required />
+              <div *ngIf="f2.submitted && !UscholarshipName.valid" class="help-block">
+                <div *ngIf="UscholarshipName.errors.required" class="text-danger">
+                  scholarshipName is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row container">
+            <!-- scholarship Deduction Type -->
+            <div class="form-group">
+              <label for="UscholarshipRateType">Deduction Type</label>
+              <br>
+              <select type="UscholarshipRateType" id="UscholarshipRateType" class="form-control" [(ngModel)]="curScholarship.rateType"
+                #UscholarshipRateType="ngModel" name="UscholarshipRateType" required>
+                <option [value]="o.value" *ngFor="let o of deductionTypeOptions">
+                  {{o.value}}
+                </option>
+              </select>
+              <div *ngIf="f2.submitted && !UscholarshipRateType.valid" class="help-block">
+                <div *ngIf="UscholarshipRateType.errors.required" class="text-danger">
+                  scholarshipRateType is required.
+                </div>
+              </div>
+            </div>
+            <!-- scholarship value -->
+            <div class="form-group" [ngClass]="{ 'has-error': f2.submitted && !UscholarshipValue.valid }">
+              <label for="UscholarshipValue">Scholarship Value</label>
+              <input type="number" min="0" class="form-control" name="UscholarshipValue" id="UscholarshipValue" [(ngModel)]="curScholarship.value"
+                #UscholarshipValue="ngModel" required />
+              <div *ngIf="f2.submitted && !UscholarshipValue.valid" class="help-block">
+                <div *ngIf="UscholarshipValue.errors.required" class="text-danger">
+                  scholarshipValue is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row container">
+            <!-- scholarship type -->
+            <div class="form-group">
+              <label for="UscholarshipType">Scholarship Type</label>
+              <br>
+              <select type="UscholarshipType" id="UscholarshipType" class="form-control" [(ngModel)]="curScholarship.scholarshipType"
+                #UscholarshipType="ngModel" name="UscholarshipType" (ngModelChange)="updateCurTypeAtUpdate()" required>
+                <option [value]="o.value" *ngFor="let o of scholarshipTypeOptions">
+                  {{o.value}}
+                </option>
+              </select>
+              <div *ngIf="f2.submitted && !UscholarshipType.valid" class="help-block">
+                <div *ngIf="UscholarshipType.errors.required" class="text-danger">
+                  scholarship type is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- requirement -->
+            <!-- major -->
+            <div *ngIf="curTypeMajor" class="form-group">
+              <label for="UscholarshipMajor">Major Required</label>
+              <br>
+              <select type="UscholarshipMajor" id="UscholarshipMajor" class="form-control" [(ngModel)]="curScholarship.major"
+                #UscholarshipMajor="ngModel" name="UscholarshipMajor" required>
+                <option [value]="o.value" *ngFor="let o of majorOptions">
+                  {{o.name}}
+                </option>
+              </select>
+              <div *ngIf="f2.submitted && !UscholarshipMajor.valid" class="help-block">
+                <div *ngIf="UscholarshipMajor.errors.required" class="text-danger">
+                  Major is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- country -->
+            <div *ngIf="curTypeCountry" class="form-group">
+              <label for="UscholarshipCountry">Country Required</label>
+              <br>
+              <select type="UscholarshipCountry" id="UscholarshipCountry" class="form-control" [(ngModel)]="curScholarship.country"
+                #UscholarshipCountry="ngModel" name="UscholarshipCountry" required>
+                <option [value]="o.value" *ngFor="let o of countryOptions">
+                  {{o.name}}
+                </option>
+              </select>
+              <div *ngIf="f2.submitted && !UscholarshipCountry.valid" class="help-block">
+                <div *ngIf="UscholarshipCountry.errors.required" class="text-danger">
+                  Country is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- gpa -->
+            <div *ngIf="curTypeGpa" class="form-group" [ngClass]="{ 'has-error': f2.submitted && !UscholarshipGpa.valid }">
+              <label for="UscholarshipGpa">GPA Required</label>
+              <input type="number" min="0" class="form-control" name="UscholarshipGpa" id="UscholarshipGpa" [(ngModel)]="curScholarship.gpa"
+                #UscholarshipGpa="ngModel" required />
+              <div *ngIf="f2.submitted && !UscholarshipGpa.valid" class="help-block">
+                <div *ngIf="UscholarshipGpa.errors.required" class="text-danger">
+                  scholarshipGpa is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="remember" class="checkbox">
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" type="submit">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- delete modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Remove Scholarship</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Warning!<br>
+        Do you want Remove the <b>{{curScholarship.number}} {{curScholarship.name}}</b> ? :(
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="delete(curScholarship.id)" href="javascript:void(0)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- create modal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Create New Scholarship</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- add scholarship -->
+        <form name="form" id="f" (ngSubmit)="f.form.valid && createScholarship()" #f="ngForm" novalidate>
+          <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+          <span id="reauth-email" class="reauth-email"></span>
+          <div class="row container">
+            <!-- scholarship number -->
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !scholarshipNumber.valid }">
+              <label for="scholarshipNumber">Scholarship Number</label>
+              <input type="text" class="form-control" name="scholarshipNumber" id="scholarshipNumber" [(ngModel)]="scholarship.number"
+                #scholarshipNumber="ngModel" required />
+              <div *ngIf="f.submitted && !scholarshipNumber.valid" class="help-block">
+                <div *ngIf="scholarshipNumber.errors.required" class="text-danger">
+                  scholarshipNumber is required.
+                </div>
+              </div>
+            </div>
+            <!-- scholarship name -->
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !scholarshipName.valid }">
+              <label for="scholarshipName">Scholarship Name</label>
+              <input type="text" class="form-control" name="scholarshipName" id="scholarshipName" [(ngModel)]="scholarship.name"
+                #scholarshipName="ngModel" required />
+              <div *ngIf="f.submitted && !scholarshipName.valid" class="help-block">
+                <div *ngIf="scholarshipName.errors.required" class="text-danger">
+                  scholarshipName is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row container">
+            <!-- scholarship Deduction Type -->
+            <div class="form-group">
+              <label for="scholarshipRateType">Deduction Type</label>
+              <br>
+              <select type="scholarshipRateType" id="scholarshipRateType" class="form-control" [(ngModel)]="scholarship.rateType"
+                #scholarshipRateType="ngModel" name="scholarshipRateType" required>
+                <option [value]="o.value" *ngFor="let o of deductionTypeOptions">
+                  {{o.value}}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && !scholarshipRateType.valid" class="help-block">
+                <div *ngIf="scholarshipRateType.errors.required" class="text-danger">
+                  scholarshipRateType is required.
+                </div>
+              </div>
+            </div>
+            <!-- scholarship value -->
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !scholarshipValue.valid }">
+              <label for="scholarshipValue">Scholarship Value</label>
+              <input type="number" min="0" class="form-control" name="scholarshipValue" id="scholarshipValue" [(ngModel)]="scholarship.value"
+                #scholarshipValue="ngModel" required />
+              <div *ngIf="f.submitted && !scholarshipValue.valid" class="help-block">
+                <div *ngIf="scholarshipValue.errors.required" class="text-danger">
+                  scholarshipValue is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row container">
+            <!-- scholarship type -->
+            <div class="form-group">
+              <label for="scholarshipType">Scholarship Type</label>
+              <br>
+              <select type="scholarshipType" id="scholarshipType" class="form-control" [(ngModel)]="scholarship.scholarshipType"
+                #scholarshipType="ngModel" name="scholarshipType" (ngModelChange)="updateCurType()" required>
+                <option [value]="o.value" *ngFor="let o of scholarshipTypeOptions">
+                  {{o.value}}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && !scholarshipType.valid" class="help-block">
+                <div *ngIf="scholarshipType.errors.required" class="text-danger">
+                  scholarship type is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- requirement -->
+            <!-- major -->
+            <div *ngIf="curTypeMajor" class="form-group">
+              <label for="scholarshipMajor">Major Required</label>
+              <br>
+              <select type="scholarshipMajor" id="scholarshipMajor" class="form-control" [(ngModel)]="scholarship.major"
+                #scholarshipMajor="ngModel" name="scholarshipMajor" required>
+                <option [value]="o.value" *ngFor="let o of majorOptions">
+                  {{o.name}}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && !scholarshipMajor.valid" class="help-block">
+                <div *ngIf="scholarshipMajor.errors.required" class="text-danger">
+                  Major is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- country -->
+            <div *ngIf="curTypeCountry" class="form-group">
+              <label for="scholarshipCountry">Country Required</label>
+              <br>
+              <select type="scholarshipCountry" id="scholarshipCountry" class="form-control" [(ngModel)]="scholarship.country"
+                #scholarshipCountry="ngModel" name="scholarshipCountry" required>
+                <option [value]="o.value" *ngFor="let o of countryOptions">
+                  {{o.name}}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && !scholarshipCountry.valid" class="help-block">
+                <div *ngIf="scholarshipCountry.errors.required" class="text-danger">
+                  Country is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- gpa -->
+            <div *ngIf="curTypeGpa" class="form-group" [ngClass]="{ 'has-error': f.submitted && !scholarshipGpa.valid }">
+              <label for="scholarshipGpa">GPA Required</label>
+              <input type="number" min="0" class="form-control" name="scholarshipGpa" id="scholarshipGpa" [(ngModel)]="scholarship.gpa"
+                #scholarshipGpa="ngModel" required />
+              <div *ngIf="f.submitted && !scholarshipGpa.valid" class="help-block">
+                <div *ngIf="scholarshipGpa.errors.required" class="text-danger">
+                  scholarshipGpa is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="remember" class="checkbox">
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

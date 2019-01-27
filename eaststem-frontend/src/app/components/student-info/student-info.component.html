@@ -1,0 +1,35 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <div *ngIf="isStudent">
+        <app-student-nav></app-student-nav>
+      </div>
+      <div *ngIf="isTeacher">
+        <app-teacher-nav></app-teacher-nav>
+      </div>
+      <div *ngIf="isCourseManager">
+        <app-course-manager-nav></app-course-manager-nav>
+      </div>
+      <div *ngIf="isFinanceManager">
+        <app-finance-manager-nav></app-finance-manager-nav>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Account Detail</h1>
+        <ul class="list-group">
+          <li class="list-group-item"><b>User Name : </b>{{curUser.username}}</li>
+          <li class="list-group-item"><b>Role : </b>{{curUser.role}}</li>
+          <li class="list-group-item"><b>Balance ($) : </b>{{curUser.balance}}</li>
+          <div *ngIf="isStudent">
+            <li class="list-group-item"><b>Country : </b>{{curUser.country}}</li>
+            <li class="list-group-item"><b>Credit : </b>{{curUser.credit}}</li>
+            <li class="list-group-item"><b>Gpa : </b>{{curUser.gpa}}</li>
+            <li class="list-group-item"><b>Major : </b>{{curUser.major}}</li>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

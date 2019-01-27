@@ -1,0 +1,72 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-finance-manager-nav></app-finance-manager-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Scholarship Assignment</h1>
+
+        <div class="row">
+          <div class="col-md-3">
+            <!-- <form name="form" id="f" (ngSubmit)="search()" #f="ngForm" novalidate> -->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Student Name" name="search" id="search"
+                [(ngModel)]="curSearch" #search="ngModel">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" (click)="searchScholarshipAssignment()">Search</button>
+              </div>
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
+
+
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th> Number</th>
+            <th> Name</th>
+            <th> Student Name</th>
+            <th> Amount ($)</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let o of scholarshipList">
+              <td>{{o.number}}</td>
+              <td>{{o.name}}</td>
+              <td>{{o.studentName}}</td>
+              <td>{{o.amount}}</td>
+              <td>
+                <button class="btn btn-danger" (click)="update(o)" data-toggle="modal" data-target="#deleteModal" >Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- delete modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Remove Scholarship</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Warning!<br>
+          Do you want Remove the scholarship: <b>{{curShownScholarship.name}} from student {{curShownScholarship.studentName}}</b> (The Amount is ${{curShownScholarship.amount}}) ? :(
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="delete(curShownScholarship.scholarAssignmentId)" href="javascript:void(0)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

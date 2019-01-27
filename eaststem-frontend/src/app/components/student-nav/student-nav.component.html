@@ -1,0 +1,54 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" [routerLink]="['/student/home']">
+            <span data-feather="home"></span>
+            Dashboard <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/student/courseRegister']">
+            <span data-feather="file"></span>
+            Course registration
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/student/course']">
+            <span data-feather="shopping-cart"></span>
+            My Courses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/student/assignment']">
+            <span data-feather="users"></span>
+            My Assignments
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/student/grade']">
+            <span data-feather="bar-chart-2"></span>
+            Grade
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/student/scholarship']">
+            <span data-feather="layers"></span>
+            Scholarship
+          </a>
+        </li>
+      </ul>
+
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+        <span>Other</span>
+      </h6>
+      <ul class="nav flex-column mb-2">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/student/info']">
+            <span data-feather="file-text"></span>
+            Account Detail
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>

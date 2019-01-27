@@ -1,0 +1,52 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-finance-manager-nav></app-finance-manager-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Course Rate</h1>
+        <p><b>Current Course Rate: $</b> {{courseRate}}</p>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createModal">Set Credit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- create modal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Create New Course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- add course -->
+        <form name="form" id="f" (ngSubmit)="f.form.valid && setCourseRate()" #f="ngForm" novalidate>
+          <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+          <div class="row container">
+            <!-- course number -->
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !courseRate.valid }">
+              <label for="courseRate">Course Rate</label>
+              <input type="number" min="0" class="form-control" name="courseRate" id="courseRate" [(ngModel)]="curRate"
+                #courseRate="ngModel" required />
+              <div *ngIf="f.submitted && !courseRate.valid" class="help-block">
+                <div *ngIf="courseRate.errors.required" class="text-danger">
+                  courseRate is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="remember" class="checkbox">
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" type="submit">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,225 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-teacher-nav></app-teacher-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Assignment</h1>
+        <div class="row">
+          <div class="col-md-3">
+            <select type="course" id="course" class="form-control" [(ngModel)]="curCourseId" (ngModelChange)="getAssignments()"
+              #role="ngModel" name="course">
+              <option [value]="-1">All Courses</option>
+              <option [value]="o.id" *ngFor="let o of courses">
+                {{o.number}}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#createModal">Add Assignment</button>
+          </div>
+        </div>
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let assignment of assignments">
+              <td>{{assignment.id}}</td>
+              <td>{{assignment.name}}</td>
+              <td>{{assignment.description}}</td>
+              <td>
+                <button class="btn btn-info" (click)="update(assignment)" data-toggle="modal" data-target="#updateModal">Edit</button>
+                <button class="btn btn-primary" (click)="viewDetail(assignment)">View Detail</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- update modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Create New Assignment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- add assignment -->
+          <form name="form" id="f2" (ngSubmit)="f2.form.valid && updateAssignment()" #f2="ngForm" novalidate>
+            <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+            <span id="reauth-email" class="reauth-email"></span>
+            <div class="row container">
+              <!-- course id -->
+              <div class="form-group">
+                <label for="courseId">Course</label>
+                <input type="courseId" id="courseId" class="form-control" 
+                  name="courseId" value={{curCourseName}} readonly required/>
+              </div>
+  
+              <!-- assignment name -->
+              <div class="form-group" [ngClass]="{ 'has-error': f2.submitted && !UassignmentName.valid }">
+                <label for="UassignmentName">Assignment Name</label>
+                <input type="text" class="form-control" name="UassignmentName" id="UassignmentName" [(ngModel)]="curAssignment.name"
+                  #UassignmentName="ngModel" required />
+                <div *ngIf="f2.submitted && !UassignmentName.valid" class="help-block">
+                  <div *ngIf="UassignmentName.errors.required" class="text-danger">
+                    assignmentName is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row container">
+              <!-- assignment point -->
+              <div class="form-group" [ngClass]="{ 'has-error': f2.submitted && !Upoint.valid }">
+                <label for="Upoint">Assignment Point</label>
+                <input type="number" min="0" class="form-control" name="Upoint" id="Upoint" [(ngModel)]="curAssignment.point" #Upoint="ngModel"
+                  required />
+                <div *ngIf="f2.submitted && !Upoint.valid" class="help-block">
+                  <div *ngIf="Upoint.errors.required" class="text-danger">
+                    point is required.
+                  </div>
+                </div>
+              </div>
+              <!-- course type -->
+              <div class="form-group">
+                <label for="UassignmentType">Assignment Type</label>
+                <br>
+                <select type="UassignmentType" id="UassignmentType" class="form-control" [(ngModel)]="curAssignment.assignmentType"
+                  #UassignmentType="ngModel" name="UassignmentType" required>
+                  <option [value]="o.value" *ngFor="let o of assignmentTypeOptions">
+                    {{o.value}}
+                  </option>
+                </select>
+                <div *ngIf="f2.submitted && !UassignmentType.valid" class="help-block">
+                  <div *ngIf="UassignmentType.errors.required" class="text-danger">
+                    assignmentType is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row container">
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1"><b>Assignment Description : </b></label>
+                <textarea class="form-control" type="text" name="description" [(ngModel)]="curAssignment.description"
+                  #description="ngModel" id="exampleFormControlTextarea1" rows="4"
+                  ></textarea>
+              </div>
+            </div>
+            <div id="remember" class="checkbox">
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" type="submit">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- create modal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Create New Assignment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- add assignment -->
+        <form name="form" id="f" (ngSubmit)="f.form.valid && createAssignment()" #f="ngForm" novalidate>
+          <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+          <span id="reauth-email" class="reauth-email"></span>
+          <div class="row container">
+            <!-- course id -->
+            <div class="form-group">
+              <label for="courseId">Course</label>
+              <br>
+              <select type="courseId" id="courseId" class="form-control" [(ngModel)]="assignment.courseId" #courseId="ngModel"
+                name="courseId" required>
+                <option [value]="o.id" *ngFor="let o of courses">
+                  {{o.name}}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && !courseId.valid" class="help-block">
+                <div *ngIf="courseId.errors.required" class="text-danger">
+                  Course is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- assignment name -->
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !assignmentName.valid }">
+              <label for="assignmentName">Course Name</label>
+              <input type="text" class="form-control" name="assignmentName" id="assignmentName" [(ngModel)]="assignment.name"
+                #assignmentName="ngModel" required />
+              <div *ngIf="f.submitted && !assignmentName.valid" class="help-block">
+                <div *ngIf="assignmentName.errors.required" class="text-danger">
+                  assignmentName is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row container">
+            <!-- assignment point -->
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !point.valid }">
+              <label for="point">Assignment Point</label>
+              <input type="number" min="0" class="form-control" name="point" id="point" [(ngModel)]="assignment.point" #point="ngModel"
+                required />
+              <div *ngIf="f.submitted && !point.valid" class="help-block">
+                <div *ngIf="point.errors.required" class="text-danger">
+                  point is required.
+                </div>
+              </div>
+            </div>
+            <!-- course type -->
+            <div class="form-group">
+              <label for="assignmentType">Assignment Type</label>
+              <br>
+              <select type="assignmentType" id="assignmentType" class="form-control" [(ngModel)]="assignment.assignmentType"
+                #assignmentType="ngModel" name="assignmentType" required>
+                <option [value]="o.value" *ngFor="let o of assignmentTypeOptions">
+                  {{o.value}}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && !assignmentType.valid" class="help-block">
+                <div *ngIf="assignmentType.errors.required" class="text-danger">
+                  assignmentType is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row container">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1"><b>Assignment Description : </b></label>
+              <textarea class="form-control" type="text" name="description" [(ngModel)]="assignment.description"
+                #description="ngModel" id="exampleFormControlTextarea1" rows="4"
+                ></textarea>
+            </div>
+          </div>
+          <div id="remember" class="checkbox">
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+

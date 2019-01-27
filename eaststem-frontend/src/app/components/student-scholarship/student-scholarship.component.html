@@ -1,0 +1,28 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-student-nav></app-student-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>My Scholarship</h1>
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th>Scholarship Number</th>
+            <th>Scholarship Name</th>
+            <th>Amout ($)</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let o of scholarships">
+              <td>{{o.number}}</td>
+              <td>{{o.name}}</td>
+              <td>{{o.amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

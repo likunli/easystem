@@ -1,0 +1,126 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-student-nav></app-student-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a [routerLink]="['/student/home']">DashBoard</a></li>
+              <li class="breadcrumb-item"><a [routerLink]="['/student/assignment']">Assignment</a></li>
+              <li class="breadcrumb-item active">Library</li>
+            </ol>
+        <h1>Assignment</h1>
+        <p>Assignment Id: {{assignment.id}}</p>
+        <p>Assignment Name: {{assignment.name}}</p>
+        <p>Assignment Describe: {{assignment.description}}</p>
+        <div *ngIf="hasSubmission">
+          <h1>Latest Submission</h1>
+          <div class="form-group">
+              <label for="exampleFormControlTextarea1"><b>Submission Content : </b></label>
+              <textarea class="form-control" type="text" name="comment" [(ngModel)]="assignmentSubmission.comment"
+                #comment="ngModel" id="exampleFormControlTextarea1" rows="4" value="{{assignmentSubmission.comment}}" readonly></textarea>
+              <label for="exampleFormControlTextarea1"><b>Submission Comment : </b></label>
+              <textarea class="form-control" type="text" name="content" [(ngModel)]="assignmentSubmission.content"
+                #content="ngModel" id="exampleFormControlTextarea1" rows="2" value="{{assignmentSubmission.content}}" readonly></textarea>
+            </div>
+          <button class="btn btn-info" data-toggle="modal" data-target="#updateModal">Update</button>
+          <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        </div>
+        <div *ngIf="!hasSubmission">
+          <button class="btn btn-info" data-toggle="modal" data-target="#submitModal">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- update modal -->
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Update Submission</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="container">
+            <div class="form-group row">
+              <label for="staticAName"><b>Assignment Name : </b> {{assignment.name}}</label>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1"><b>Submission Content : </b></label>
+              <textarea class="form-control" type="text" name="comment" [(ngModel)]="assignmentSubmission.comment"
+                #comment="ngModel" id="exampleFormControlTextarea1" rows="4" value="{{assignmentSubmission.comment}}"></textarea>
+              <label for="exampleFormControlTextarea1"><b>Submission Comment : </b></label>
+              <textarea class="form-control" type="text" name="content" [(ngModel)]="assignmentSubmission.content"
+                #content="ngModel" id="exampleFormControlTextarea1" rows="2" value="{{assignmentSubmission.content}}"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="updateSubmission()">Re-submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- delete modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Submission</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to delete latest submission ? :)
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteSubmission()" href="javascript:void(0)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- submit modal -->
+  <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Submit</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="container">
+              <div class="form-group row">
+                <label for="staticAName"><b>Assignment Name : </b> {{assignment.name}}</label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1"><b>Submission Content : </b></label>
+                <textarea class="form-control" type="text" name="comment" [(ngModel)]="assignmentSubmission.comment"
+                  #comment="ngModel" id="exampleFormControlTextarea1" rows="4"></textarea>
+                <label for="exampleFormControlTextarea1"><b>Submission Comment : </b></label>
+                <textarea class="form-control" type="text" name="content" [(ngModel)]="assignmentSubmission.content"
+                  #content="ngModel" id="exampleFormControlTextarea1" rows="2"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="submitSubmission()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

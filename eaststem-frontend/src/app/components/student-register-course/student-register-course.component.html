@@ -1,0 +1,102 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <app-student-nav></app-student-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Register Course</h1>
+        <div class="row">
+          <div class="col-md-3">
+            <label for="semester">Semester</label>
+            <select type="semester" id="semester" class="form-control" [(ngModel)]="semester" (ngModelChange)="refresh()"
+              #role="ngModel" name="semester">
+              <option [value]="o.value" *ngFor="let o of semesterOptions">
+                {{o.name}}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="major">Major</label>
+            <select type="major" id="major" class="form-control" [(ngModel)]="major" (ngModelChange)="refresh()" #role="ngModel"
+              name="major">
+              <option [value]="o.value" *ngFor="let o of majorOptions">
+                {{o.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th>Course Number</th>
+            <th>Course Name</th>
+            <th>Seats Left</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let course of courses">
+              
+              <td>{{course.number}}</td>
+              <td>{{course.name}}</td>
+              <td>{{course.capacity}}</td>
+              <td>
+                <button class="btn btn-info" (click)="update(course)" data-toggle="modal" data-target="#infoModal">Detail</button>
+                <button class="btn btn-primary" (click)="update(course)" data-toggle="modal" data-target="#registerModel">Register</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <button class="btn btn-primary" (click)="newUser()">New User</button> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Course Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <ul class="list-group">
+                <li class="list-group-item"><b>Course Number:</b>     {{curCourse.number}}</li>
+                  <li class="list-group-item"><b>Course Name:</b>     {{curCourse.name}}</li>
+                  <li class="list-group-item"><b>Course Major:</b>     {{curCourse.major}}</li>
+                  <li class="list-group-item"><b>Course Location:</b>     {{curCourse.location}}</li>
+                  <li class="list-group-item"><b>Course Credit:</b>     {{curCourse.credit}}</li>
+                  <li class="list-group-item"><b>Course Type:</b>     {{curCourse.courseType}}</li>
+                  <li class="list-group-item"><b>Evaluation Type:</b>     {{curCourse.evaluationType}}</li>
+                  <li class="list-group-item"><b>Course Capacity:</b>     {{curCourse.capacity}}</li>
+              </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal"href="javascript:void(0)">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="registerModel" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Register Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Do you want register for the  {{curCourse.name}}   ?   :)
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="register(curCourse.id)" href="javascript:void(0)">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>  

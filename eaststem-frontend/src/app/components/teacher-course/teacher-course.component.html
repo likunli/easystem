@@ -1,0 +1,135 @@
+<app-header></app-header>
+<div>
+  <div class="row">
+    <!-- <app-logged>You are not logged in!</app-logged> -->
+    <div class="col-md-3">
+      <app-teacher-nav></app-teacher-nav>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h1>Course</h1>
+        <table class="table table-hover table-stripe">
+          <thead>
+            <th>ID</th>
+            <th>Number</th>
+            <th>Name</th>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let course of courses">
+              <td>{{course.id}}</td>
+              <td>{{course.number}}</td>
+              <td>{{course.name}}</td>
+              <td>
+                <button class="btn btn-info" (click)="update(course)" data-toggle="modal" data-target="#generateModel">Generate
+                  Final Grade</button>
+                <button class="btn btn-info" (click)="update(course)" data-toggle="modal" data-target="#infoModal">Detail</button>
+                <button class="btn btn-danger" (click)="update(course)" data-toggle="modal" data-target="#createModal">Set
+                  Evaluation Rule</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <button class="btn btn-primary" (click)="newUser()">New User</button> -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- generate grade -->
+  <div class="modal fade" id="generateModel" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Register Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you grade the course {{curCourse.name}} {{curCourse.id}} finally? :)<br>
+          Make sure you have graded all the assignments~<br>
+          The Final grade is based on all the assignments you graded before.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" href="javascript:void(0)">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="grade(curCourse.id)" href="javascript:void(0)">Final
+            Grade</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Course Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+              <li class="list-group-item"><b>Course Number:</b>     {{curCourse.number}}</li>
+              <li class="list-group-item"><b>Course Name:</b>     {{curCourse.name}}</li>
+              <li class="list-group-item"><b>Course Major:</b>     {{curCourse.major}}</li>
+              <li class="list-group-item"><b>Course Location:</b>     {{curCourse.location}}</li>
+              <li class="list-group-item"><b>Course Credit:</b>     {{curCourse.credit}}</li>
+              <li class="list-group-item"><b>Course Type:</b>     {{curCourse.courseType}}</li>
+              <li class="list-group-item"><b>Evaluation Type:</b>     {{curCourse.evaluationType}}</li>
+              <li class="list-group-item"><b>Course Capacity:</b>     {{curCourse.capacity}}</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" href="javascript:void(0)">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- set Evaluation type -->
+  <!-- create modal -->
+  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Create New Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- add course -->
+          <form name="form" id="f" (ngSubmit)="f.form.valid && setCourseEveluationType()" #f="ngForm" novalidate>
+            <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+            <div class="row container">
+              <!-- course type -->
+              <div class="form-group">
+                <label for="courseType">Course Type</label>
+                <br>
+                <select type="courseType" id="courseType" class="form-control" [(ngModel)]="curCourse.evaluationType"
+                  #courseType="ngModel" name="courseType" value="curCourse.evaluationType" required>
+                  <option [value]="o.value" *ngFor="let o of evaluationOptions">
+                    {{o.value}}
+                  </option>
+                </select>
+                <div *ngIf="f.submitted && !courseType.valid" class="help-block">
+                  <div *ngIf="courseType.errors.required" class="text-danger">
+                    Evaluation Type is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="remember" class="checkbox">
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" type="submit">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
