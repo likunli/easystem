@@ -8,7 +8,7 @@ Back-end: Spring Boot, Spring security, Spring Data JPA, HQL, MySQL
 
 Front-end: Angular 4, TypeScript, Bootstrap 4
 
-
+http://likuniscoding.com (invalid temperary)
 
 
 Tips:
